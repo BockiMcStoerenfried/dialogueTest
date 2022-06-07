@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using Ink.Runtime;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -12,15 +11,14 @@ public class DialogueManager : MonoBehaviour
 
     [Header("Dialogue UI")]
     [SerializeField] private GameObject dialoguePanel;
-    [SerializeField] private TextMeshProUGUI dialogueText;
-  //  [SerializeField] private Text dialogueText;
+    [SerializeField] private Text dialogueText;
 
 
 
 
     [Header("Choices UI")]
     [SerializeField] private GameObject[] choices;
-    private TextMeshProUGUI[] choicesText;
+    [SerializeField] private Text[] choicesText;
 
 
 
@@ -28,6 +26,8 @@ public class DialogueManager : MonoBehaviour
 
    
     public bool dialogueIsPlaying { get; private set; }
+    public bool choicesEnabled = false;
+
 
 
 
@@ -35,30 +35,29 @@ public class DialogueManager : MonoBehaviour
 
     private void Start()
     {
-        //makes sure that the Dialogue Window is not loaded when the Dialogue Trigger is loaded
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
 
-        choicesText = new TextMeshProUGUI[choices.Length];
+        choicesText = new Text[choices.Length];
 
         int index = 0;
         foreach (GameObject choice in choices)
         {
-            choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
+            choicesText[index] = choice.GetComponentInChildren<Text>();
             index++;
         }
     }
 
     private void Update()
     {
-        
         if (!dialogueIsPlaying)
         {
             return;
         }
-        if (Input.GetKeyDown(KeyCode.Space))
+        else if (Input.GetKeyDown(KeyCode.Space))
         {
-            ContinueStory();
+             ContinueStory();
+      
         }
     }
 
@@ -71,6 +70,7 @@ public class DialogueManager : MonoBehaviour
         if (dialogueIsPlaying == false)
         {
             ContinueStory();
+            
         }    
         dialogueIsPlaying = true;
     }
@@ -84,7 +84,6 @@ public class DialogueManager : MonoBehaviour
 
     public void ContinueStory()
     {
-        
         if (currentStory.canContinue)
         {
             
@@ -93,7 +92,7 @@ public class DialogueManager : MonoBehaviour
             DisplayChoices();
 
         }
-        else
+        else if(currentStory.canContinue == false && choicesEnabled == false)
         {
             TagHandler();
             ExitDialogueMode();
@@ -102,8 +101,12 @@ public class DialogueManager : MonoBehaviour
 
     private void DisplayChoices()
     {
-
         List<Choice> currentChoices = currentStory.currentChoices;
+
+        if (!currentStory.canContinue)
+        {
+            choicesEnabled = true;
+        }
 
         if (currentChoices.Count > choices.Length)
         {
@@ -119,6 +122,8 @@ public class DialogueManager : MonoBehaviour
             choicesText[index].text = choice.text; 
             index++;
         }
+            
+        
 
         for (int i = index; i < choices.Length; i++)
         {
@@ -132,6 +137,8 @@ public class DialogueManager : MonoBehaviour
     {
         currentStory.ChooseChoiceIndex(choiceIndex);
         ContinueStory();
+        choicesEnabled = false;
+
     }
 
     private IEnumerator SelectFirstChoice()
