@@ -6,14 +6,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
+
 public class DialogueManager : MonoBehaviour
 {
 
     [Header("Dialogue UI")]
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private Text dialogueText;
-
-
+    [SerializeField] private Text displayNameText;
 
 
     [Header("Choices UI")]
@@ -21,24 +21,40 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private Text[] choicesText;
 
 
+    private Story currentStory;
 
-    private Story currentStory; 
+    private static DialogueManager instance;
 
-   
+
     public bool dialogueIsPlaying { get; private set; }
     public bool choicesEnabled = false;
 
+    private const string SPEAKER_TAG = "speaker";
+    private const string LAYOUT_TAG = "layout";
+    private const string STATE_TAG = "state";
 
+ 
 
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Debug.LogWarning("Found more than one Dialogue Manager in the scene");
+        }
+        instance = this;
+    }
 
-
+    public static DialogueManager GetInstance()
+    {
+        return instance;
+    }
 
     private void Start()
     {
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
-
         choicesText = new Text[choices.Length];
+
 
         int index = 0;
         foreach (GameObject choice in choices)
@@ -56,22 +72,21 @@ public class DialogueManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
-             ContinueStory();
-      
+            ContinueStory();
+
         }
     }
 
-
-    public void EnterDialogueMode(TextAsset inkJSON) 
-    {    
-        currentStory = new Story(inkJSON.text);
-        dialoguePanel.SetActive(true);
-
+    public void EnterDialogueMode(TextAsset inkJSON)
+    {
+        
         if (dialogueIsPlaying == false)
         {
+            currentStory = new Story(inkJSON.text);
+            dialoguePanel.SetActive(true);
             ContinueStory();
-            
-        }    
+
+        }
         dialogueIsPlaying = true;
     }
 
@@ -80,21 +95,23 @@ public class DialogueManager : MonoBehaviour
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
+
     }
 
     public void ContinueStory()
     {
         if (currentStory.canContinue)
         {
-            
+
             dialogueText.text = currentStory.Continue();
-            
+
             DisplayChoices();
+            TagHandler(currentStory.currentTags);
 
         }
-        else if(currentStory.canContinue == false && choicesEnabled == false)
+        else if (!currentStory.canContinue && !choicesEnabled)
         {
-            TagHandler();
+
             ExitDialogueMode();
         }
     }
@@ -114,21 +131,21 @@ public class DialogueManager : MonoBehaviour
 
         }
 
-    
+
         int index = 0;
         foreach (Choice choice in currentChoices)
         {
             choices[index].gameObject.SetActive(true);
-            choicesText[index].text = choice.text; 
+            choicesText[index].text = choice.text;
             index++;
         }
-            
-        
+
+
 
         for (int i = index; i < choices.Length; i++)
         {
             choices[i].gameObject.SetActive(false);
-        } 
+        }
 
         StartCoroutine(SelectFirstChoice());
     }
@@ -150,30 +167,38 @@ public class DialogueManager : MonoBehaviour
 
     }
 
-
-
-    public void TagHandler()
+    public void TagHandler(List<string> currentTags)
     {
-        if (currentStory.currentTags != null)
+
+        foreach (string tag in currentTags)
         {
-            List<string> tags = currentStory.currentTags;
+            string[] splitTag = tag.Split(':');
 
-            Debug.Log(tags[0]);
+            string tagKey = splitTag[0].Trim();
+            string tagValue = splitTag[1].Trim();
 
-            if (tags[0] == "loser")
+            switch (tagKey)
             {
-                Debug.Log("You lost, yey");
+                case SPEAKER_TAG:
+                    displayNameText.text = tagValue;
+                    break;   
+                case LAYOUT_TAG:
+                    Debug.Log(tagValue);
+                       break; 
+                case STATE_TAG:
+                    Debug.Log(tagValue);
+                    choicesEnabled = false;
+                    break;
+                default:
+                    Debug.LogWarning("Tag came in but is not currently being handled: " + tag);
+                    break;
             }
-            else if (tags[0] == "winner")
-            {
-                Debug.Log("You won, lul");
-            }
+
+
         }
- 
-        
+
+
+
+
     }
-
-
-    
-
 }

@@ -1,138 +1,61 @@
 VAR drunk = 0
 VAR win = 0
-VAR loop = 0
+VAR insultattack = 0
+VAR insultdefense = 0
+
 VAR attack = 0
 VAR defense = 0
 
 
 VAR score = false
 
-Flinta: Give me your Best
---> MAIN
+Give me your Best #speaker:Flinta
+
+~insultattack = RANDOM(0,3)
+
+Let's play a Game #speaker:Regina
+
+-> INSULT_REGINA
+
+
+== INSULT_REGINA == 
+
+My Turn! #speaker:Regina
+
+{insultattack == 0: A} 
+{insultattack == 1: B} 
+{insultattack == 2: C} 
+{insultattack == 3: D} 
+
++a                  
+    ~insultdefense = 0
+    {insultattack == insultdefense: -> WON_INSULT | -> LOST_INSULT } 
++b                  
+    ~insultdefense = 1
+    {insultattack == insultdefense: -> WON_INSULT | -> LOST_INSULT } 
++c                  
+    ~insultdefense = 2
+    {insultattack == insultdefense: -> WON_INSULT | -> LOST_INSULT } 
++d                 
+    ~insultdefense = 3
+    {insultattack == insultdefense: -> WON_INSULT | -> LOST_INSULT } 
 
 
 
-== MAIN ==
+== INSULT_FLINTA ==
 
-{drunk == 5:  -> LOSE} 
+My Turn! #speaker:Flinta
 
-{win == 5: -> WIN}
-
-{loop == 4: Flinta: My Turn! | Regina: My Turn!}
-
-{ loop:
-- "0": -> INSULT1
-- "1": -> INSULT2
-- "2": -> INSULT3
-- "3": -> INSULT4
-- "4": -> INSULT_CHOICES
-}
-
-
-== INSULT1 ==  
-
-
-Regina: A 
-
-+Flinta: a
-    ~win += 1
-    ~loop = 4
-+Flinta: b
-    ~drunk += 1
-    ~loop = RANDOM(0,3)
-+Flinta: c
-    ~drunk += 1
-    ~loop = RANDOM(0,3)
-+Flinta: d
-    ~drunk += 1
-    ~loop = RANDOM(0,3)
-    
---> MAIN 
-
-
-
-
-== INSULT2 ==
-
-
-Regina: B
-
-+Flinta: a
-    ~drunk += 1
-    ~loop = RANDOM(0,3)
-+Flinta: b
-    ~win += 1
-    ~loop = 4
-+Flinta: c
-    ~drunk += 1
-    ~loop = RANDOM(0,3)
-+Flinta: d
-    ~drunk += 1
-    ~loop = RANDOM(0,3)
-    
---> MAIN
-
-
-
-== INSULT3 ==
-
-
-Regina: C
-
-+Flinta: a
-    ~drunk += 1
-    ~loop = RANDOM(0,3)
-+Flinta: b
-    ~drunk += 1
-    ~loop = RANDOM(0,3)
-+Flinta: c
-    ~win += 1
-    ~loop = 4
-+Flinta: d
-    ~drunk += 1
-    ~loop = RANDOM(0,3)
---> MAIN
-
-
-
-
-== INSULT4 ==
-
-
-Regina: D
-
-+Flinta: a
-    ~drunk += 1
-    ~loop = RANDOM(0,3)
-+Flinta: b
-    ~drunk += 1
-    ~loop = RANDOM(0,3)
-+Flinta: c
-    ~drunk += 1
-    ~loop = RANDOM(0,3)
-+Flinta: d
-    ~win += 1
-    ~loop = 4
---> MAIN
-
-
-
-== INSULT_CHOICES ==
-
-{drunk == 5:  -> LOSE} 
-
-{win == 5: -> WIN}
-
-+Flinta: A
++A
     ~attack = 0
     ~defense = RANDOM(0,3)
-+Flinta: B
++B
     ~attack = 1
     ~defense = RANDOM(0,3)
-+Flinta: C
++C
     ~attack = 2
     ~defense = RANDOM(0,3)
-+Flinta: D
++D
     ~attack = 3
     ~defense = RANDOM(0,3)
 --> RESPONSE
@@ -142,43 +65,47 @@ Regina: D
 
 == RESPONSE ==
 
-{defense == 0: Regina: a }
-{defense == 1: Regina: b }
-{defense == 2: Regina: c }
-{defense == 3: Regina: d }
+#speaker:Regina
+{defense == 0: a }
+{defense == 1: b }
+{defense == 2: c }
+{defense == 3: d }
 
 {defense == attack:  -> LOST_INSULT | -> WON_INSULT }
 
 
 == WON_INSULT ==
 
-Flinta: Drink up!
+Drink up! #speaker:Flinta
     ~win += 1
+    
+{win == 5: -> WIN}
 
---> MAIN
+--> INSULT_FLINTA
 
 
 
 == LOST_INSULT ==
 
-Regina: Drink up!
+Drink up! #speaker:Regina
     ~drunk += 1
-    ~loop = RANDOM(0,3)
 
---> MAIN
+{drunk == 5:  -> LOSE} 
+
+--> INSULT_REGINA
 
 
 
 
 == LOSE ==
 
-lost #loser
+lost #state:loser
 
 -> END
 
 
 == WIN ==
 
-won #winner
+won #state:winner
 
 -> END
