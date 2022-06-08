@@ -142,7 +142,7 @@ public class DialogueManager : MonoBehaviour
 
 
 
-    //checks if there are any choices at the current line in the story > if yes, it will load them into a list / activate the choice buttons / selects the first choice
+    //checks if there are any choices at the current line in the story > if yes, it will load them into a list / activate the choice buttons 
     private void DisplayChoices()
     {
         List<Choice> currentChoices = currentStory.currentChoices;
@@ -173,9 +173,7 @@ public class DialogueManager : MonoBehaviour
         {
             choices[i].gameObject.SetActive(false);
         }
-        
-        //selects the first option
-        StartCoroutine(SelectFirstChoice());
+
     }
 
 
@@ -189,17 +187,6 @@ public class DialogueManager : MonoBehaviour
 
     }
 
-
-
-    //selects the first choice if they have been activated
-    private IEnumerator SelectFirstChoice()
-    {
-        EventSystem.current.SetSelectedGameObject(null);
-        yield return new WaitForEndOfFrame();
-
-        EventSystem.current.SetSelectedGameObject(choices[0].gameObject);
-
-    }
 
 
 

@@ -27,16 +27,16 @@ My Turn! #speaker:Regina
 {insultattack == 2: C} 
 {insultattack == 3: D} 
 
-+a                  
++a              #speaker:Flinta   
     ~insultdefense = 0
     {insultattack == insultdefense: -> WON_INSULT | -> LOST_INSULT } 
-+b                  
++b              #speaker:Flinta 
     ~insultdefense = 1
     {insultattack == insultdefense: -> WON_INSULT | -> LOST_INSULT } 
-+c                  
++c              #speaker:Flinta
     ~insultdefense = 2
     {insultattack == insultdefense: -> WON_INSULT | -> LOST_INSULT } 
-+d                 
++d              #speaker:Flinta
     ~insultdefense = 3
     {insultattack == insultdefense: -> WON_INSULT | -> LOST_INSULT } 
 
