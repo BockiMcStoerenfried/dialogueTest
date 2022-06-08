@@ -12,6 +12,7 @@ public class DialogueManager : MonoBehaviour
 
     [Header("Dialogue UI")]
     [SerializeField] private GameObject dialoguePanel;
+    [SerializeField] private GameObject speakerPanel;
     [SerializeField] private Text dialogueText;
     [SerializeField] private Text displayNameText;
 
@@ -20,12 +21,12 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private GameObject[] choices;
     [SerializeField] private Text[] choicesText;
 
-
+    //main class from Ink.Runtime
     private Story currentStory;
 
     private static DialogueManager instance;
 
-
+    //these are important to ensure that the dialogue is only playing / skipable, when it's appropriate  
     public bool dialogueIsPlaying { get; private set; }
     public bool choicesEnabled = false;
 
@@ -34,7 +35,7 @@ public class DialogueManager : MonoBehaviour
     private const string STATE_TAG = "state";
 
  
-
+    //Checks if there are multiple DialogueManagers in the scene (It's supposed to be a Singleton-Class)
     private void Awake()
     {
         if (instance != null)
@@ -44,15 +45,22 @@ public class DialogueManager : MonoBehaviour
         instance = this;
     }
 
+
+
+    //returns the instance (only important when this class is supposed to be called through another script)
     public static DialogueManager GetInstance()
     {
         return instance;
     }
 
+
+
+    //defaults the dialogue panels to inactive + Acceses the Text Component in the Choice Buttons and puts it into an array
     private void Start()
     {
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
+        speakerPanel.SetActive(false);
         choicesText = new Text[choices.Length];
 
 
@@ -64,6 +72,9 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+
+
+    //defensive check: if the dialogue isn't playing this class isn't going to return anything + Input to continue the Story to the next line
     private void Update()
     {
         if (!dialogueIsPlaying)
@@ -77,6 +88,9 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+
+
+    //this is supposed to be called through a DialougeTrigger > Activates the dialogue panels
     public void EnterDialogueMode(TextAsset inkJSON)
     {
         
@@ -84,20 +98,30 @@ public class DialogueManager : MonoBehaviour
         {
             currentStory = new Story(inkJSON.text);
             dialoguePanel.SetActive(true);
+            speakerPanel.SetActive(true);
             ContinueStory();
 
         }
         dialogueIsPlaying = true;
     }
 
+
+
+    //deactivates the dialogue panel when the dialogue is exited
     private void ExitDialogueMode()
     {
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
+        speakerPanel.SetActive(false);
         dialogueText.text = "";
 
     }
 
+
+
+    //this is called when the story is supposed to continue to the next line +checks if it can continue
+    // if yes > goes to the next line in story / Checks if there are any choiches / Checks for Tags
+    // if no > Exits Dialogue
     public void ContinueStory()
     {
         if (currentStory.canContinue)
@@ -116,11 +140,14 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+
+
+    //checks if there are any choices at the current line in the story > if yes, it will load them into a list / activate the choice buttons / selects the first choice
     private void DisplayChoices()
     {
         List<Choice> currentChoices = currentStory.currentChoices;
 
-        if (!currentStory.canContinue)
+        if (currentChoices.Count >0)
         {
             choicesEnabled = true;
         }
@@ -131,7 +158,7 @@ public class DialogueManager : MonoBehaviour
 
         }
 
-
+        //activates as many buttons as there are choices
         int index = 0;
         foreach (Choice choice in currentChoices)
         {
@@ -141,15 +168,19 @@ public class DialogueManager : MonoBehaviour
         }
 
 
-
+        //deactivates the unused buttons
         for (int i = index; i < choices.Length; i++)
         {
             choices[i].gameObject.SetActive(false);
         }
-
+        
+        //selects the first option
         StartCoroutine(SelectFirstChoice());
     }
 
+
+
+    //this is supposed to be called through the choice buttons > continues the story through the player's choice
     public void MakeChoice(int choiceIndex)
     {
         currentStory.ChooseChoiceIndex(choiceIndex);
@@ -158,6 +189,9 @@ public class DialogueManager : MonoBehaviour
 
     }
 
+
+
+    //selects the first choice if they have been activated
     private IEnumerator SelectFirstChoice()
     {
         EventSystem.current.SetSelectedGameObject(null);
@@ -167,6 +201,9 @@ public class DialogueManager : MonoBehaviour
 
     }
 
+
+
+    //checks for Tags, splits them accordingly and gives the option to do smth with the information
     public void TagHandler(List<string> currentTags)
     {
 
@@ -187,7 +224,6 @@ public class DialogueManager : MonoBehaviour
                        break; 
                 case STATE_TAG:
                     Debug.Log(tagValue);
-                    choicesEnabled = false;
                     break;
                 default:
                     Debug.LogWarning("Tag came in but is not currently being handled: " + tag);
