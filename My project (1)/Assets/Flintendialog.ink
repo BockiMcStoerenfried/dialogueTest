@@ -22,6 +22,10 @@ Let's play a Game #speaker:Regina
 
 My Turn! #speaker:Regina
 
+-> TEST
+
+== CHOICES ==
+
 {insultattack == 0: A} 
 {insultattack == 1: B} 
 {insultattack == 2: C} 
@@ -93,6 +97,13 @@ Drink up! #speaker:Regina
 {drunk == 5:  -> LOSE} 
 
 --> INSULT_REGINA
+
+
+
+
+== TEST ==
+
+-> CHOICES
 
 
 

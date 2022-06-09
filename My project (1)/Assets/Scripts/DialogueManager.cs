@@ -33,6 +33,7 @@ public class DialogueManager : MonoBehaviour
     private const string SPEAKER_TAG = "speaker";
     private const string LAYOUT_TAG = "layout";
     private const string STATE_TAG = "state";
+    private const string SKIP_TAG = "skip";
 
  
     //Checks if there are multiple DialogueManagers in the scene (It's supposed to be a Singleton-Class)
@@ -211,6 +212,9 @@ public class DialogueManager : MonoBehaviour
                        break; 
                 case STATE_TAG:
                     Debug.Log(tagValue);
+                    break;
+                case SKIP_TAG:
+                    ContinueStory();
                     break;
                 default:
                     Debug.LogWarning("Tag came in but is not currently being handled: " + tag);

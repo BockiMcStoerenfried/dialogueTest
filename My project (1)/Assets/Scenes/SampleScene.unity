@@ -1763,7 +1763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a7eea21c0355734d839f7b072b6c583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ink: {fileID: 4900000, guid: fbe3213701a15ce429fd81c8ea4231b0, type: 3}
+  ink: {fileID: 4900000, guid: a07ff2ae9a18e444db632d525144db72, type: 3}
 --- !u!1 &1933349041
 GameObject:
   m_ObjectHideFlags: 0
