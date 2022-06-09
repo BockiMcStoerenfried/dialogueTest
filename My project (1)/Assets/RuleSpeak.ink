@@ -19,7 +19,7 @@ VAR rounds_lost = 0
 
 Die Regäln sind einfasch: #speaker:c
 
-1. Fünf Silben, dann sieben, dann fünf
+1. Fünf Silben, dann sieben, dann fünf, das ist das Haiku
 2. Nach 3 Zeilen kommt ein "yo-ho-ho" und dann nach fünf ein "und ne Budel voll Rum"
 
 
@@ -36,26 +36,26 @@ Die Regäln sind einfasch: #speaker:c
 === REGINA_CHECKER ===
 
 {attack: 
-- 1: Die Schuhe stinken #speaker:c
-- 2: Du Leichtmatrose #speaker:c
-- 3: Spiegel hassen dich #speaker:c
-- 4: Ich klatsch dir eine #speaker:c
-- 5: 5.5 #speaker:c
-- 6: Davy Jones' Kiste wartet schon #speaker:c
-- 7: Dein Holzbein wird verfeuert #speaker:c
-- 8: 7.3
-- 9: 7.4
-- 10: 7.5
-- 11: Yo-'o-'o #speaker:c 
-- 12: Yo-'o-'o #speaker:c 
-- 13: Yo-'o-'o #speaker:c
-- 14: Yo-'o-'o #speaker:c
-- 15: Yo-'o-'o #speaker:c
-- 16: Und ne Budel voll Rüm #speaker:c
-- 17: Und ne Budel voll Rüm #speaker:c
-- 18: Und ne Budel voll Rüm #speaker:c
-- 19: Und ne Budel voll Rüm #speaker:c
-- 20: Und ne Budel voll Rüm #speaker:c
+- 1: Spiegel 'assön disch! #speaker:c
+- 2: Die Schu'e stinkön! #speaker:c
+- 3: Die Schu'e stinkön!#speaker:c
+- 4: Et voilà la merde!#speaker:c
+- 5: Dü Leischtmatrösä!#speaker:c
+- 6: Dävy Jönäs' Kiste wartät schön! #speaker:c
+- 7: Dein 'ölzbein wird värfäuärt! #speaker:c
+- 8: Dü bischt ein räudigär 'ünd! #speaker:c
+- 9: Übär die Plankä mit dir! #speaker:c
+- 10: Tu as un sacré culot! #speaker:c
+- 11: Yö-'ö-'ö #speaker:c 
+- 12: Yö-'ö-'ö #speaker:c  
+- 13: Yö-'ö-'ö #speaker:c 
+- 14: Yö-'ö-'ö #speaker:c 
+- 15: Yö-'ö-'ö #speaker:c 
+- 16: Ünd nä Büdäl völl Rüm #speaker:c
+- 17: Ünd nä Büdäl völl Rüm #speaker:c
+- 18: Ünd nä Büdäl völl Rüm #speaker:c
+- 19: Ünd nä Büdäl völl Rüm #speaker:c
+- 20: Ünd nä Büdäl völl Rüm #speaker:c
 }
 
 {roundCount:
@@ -94,31 +94,31 @@ Die Regäln sind einfasch: #speaker:c
 ~5syl = RANDOM(1,5)
 ~7syl = RANDOM(1,5)
 
-+ {5syl == 1} 5.a #speaker:f
++ {5syl == 1} Beim Klabautermann! #speaker:f
     ~defense = 1
     {Ycounter == 3: -> ROUND_LOST}
     {Ycounter == 5: -> ROUND_LOST}
     {roundCountF == defense: -> ROUND_1R | -> ROUND_LOST}
     
-+ {5syl == 2} 5.b #speaker:f
++ {5syl == 2} Halt's Schandmaul, Sprotte! #speaker:f
     ~defense = 1
     {Ycounter == 3: -> ROUND_LOST}
     {Ycounter == 5: -> ROUND_LOST}
     {roundCountF == defense: -> ROUND_1R | -> ROUND_LOST}
     
-+ {5syl == 3} 5.c #speaker:f
++ {5syl == 3} Versteck dich lieber! #speaker:f
     ~defense = 1
     {Ycounter == 3: -> ROUND_LOST}
     {Ycounter == 5: -> ROUND_LOST}
     {roundCountF == defense: -> ROUND_1R | -> ROUND_LOST}
     
-+ {5syl == 4} 5.d #speaker:f
++ {5syl == 4} Verflucht sei dein Blut! #speaker:f
     ~defense = 1
     {Ycounter == 3: -> ROUND_LOST}
     {Ycounter == 5: -> ROUND_LOST}
     {roundCountF == defense: -> ROUND_1R | -> ROUND_LOST}
     
-+ {5syl == 5} 5.e #speaker:f
++ {5syl == 5} Das Vieh gehört hinaus! #speaker:f
     ~defense = 1
     {Ycounter == 3: -> ROUND_LOST}
     {Ycounter == 5: -> ROUND_LOST}
@@ -127,31 +127,31 @@ Die Regäln sind einfasch: #speaker:c
     
     
     
-+ {7syl == 1} 7.a #speaker:f
++ {7syl == 1} Nimm den Stiefel aus dem Maul! #speaker:f
     ~defense = 2
     {Ycounter == 3: -> ROUND_LOST}
     {Ycounter == 5: -> ROUND_LOST}
     {roundCountF  == defense: -> ROUND_1R | -> ROUND_LOST}
     
-+ {7syl == 2} 7.b #speaker:f
++ {7syl == 2} Pockiger Bilgenaffe! #speaker:f
     ~defense = 2
     {Ycounter == 3: -> ROUND_LOST}
     {Ycounter == 5: -> ROUND_LOST}
     {roundCountF  == defense: -> ROUND_1R | -> ROUND_LOST}  
     
-+ {7syl == 3} 7.c #speaker:f
++ {7syl == 3} Dich werd ich kiel holn lassen! #speaker:f
     ~defense = 2
     {Ycounter == 3: -> ROUND_LOST}
     {Ycounter == 5: -> ROUND_LOST}
     {roundCountF  == defense: -> ROUND_1R | -> ROUND_LOST}
     
-+ {7syl == 4} 7.d #speaker:f
++ {7syl == 4} Bist den Kugeln zu schade! #speaker:f
     ~defense = 2
     {Ycounter == 3: -> ROUND_LOST}
     {Ycounter == 5: -> ROUND_LOST}
     {roundCountF  == defense: -> ROUND_1R | -> ROUND_LOST}
     
-+ {7syl == 5} 7.e #speaker:f
++ {7syl == 5} Dei Visage schreckt nicht schlecht! #speaker:f
     ~defense = 2
     {Ycounter == 3: -> ROUND_LOST}
     {Ycounter == 5: -> ROUND_LOST}
@@ -390,8 +390,8 @@ Die Regäln sind einfasch: #speaker:c
 
 === ROUND_WON ===
 
-Haha, drink up! #speaker:f
-
+Haha, das war falsch! Musst trinken! #speaker:f
+Jetzt bin ich dran!
 ~rounds_won += 1
 ~Ycounter = 0
 ~roundCount = 0
@@ -404,7 +404,8 @@ Haha, drink up! #speaker:f
 
 === ROUND_LOST ===
 
-Ah oui, trink! #speaker:c
+Ah oui, dü müsst trinkön! #speaker:c
+Alsö, vön vörn.
 ~rounds_lost += 1
 ~Ycounter = 0
 ~roundCount = 0
@@ -417,6 +418,6 @@ Ah oui, trink! #speaker:c
 
 === STOP ===
 
-end of game
+{rounds_won == 5: gewonnen! | verloren!}
 
--->END
+->END
